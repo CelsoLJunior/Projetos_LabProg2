@@ -1,0 +1,12 @@
+-- Criação da Tabela
+create table produto(
+id serial primary key,
+codigo integer,
+nome varchar(30),
+preco decimal(5,2)
+);
+
+DELETE FROM produto;
+ALTER SEQUENCE produto_codigo_seq RESTART WITH 1;
+
+SELECT * FROM produto;
