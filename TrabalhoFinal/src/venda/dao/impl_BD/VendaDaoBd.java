@@ -7,7 +7,7 @@ import java.util.List;
 import venda.dominio.Produto;
 import venda.dao.ProdutoDao;
 
-public class ProdutoDaoBd extends DaoBd<Produto> implements ProdutoDao {
+public class VendaDaoBd extends DaoBd<Produto> implements ProdutoDao {
   
 
     //Metodo salvar: trabalhar com data e recebe o id auto-increment 
