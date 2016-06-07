@@ -9,21 +9,19 @@ package venda.view.menu;
  *
  * @author 691001155
  */
-public class VendaMenu {
-    public static final int OP_CADASTRAR = 1;
-    public static final int OP_DELETAR = 2;
-    public static final int OP_ATUALIZAR = 3;
-    public static final int OP_LISTAR = 4;
-    public static final int OP_CONSULTAR = 5;
+public class RelatorioMenu {
+    public static final int OP_PRODVENDIDOS = 1;
+    public static final int OP_COMPRASCLIENTE = 2;
+    public static final int OP_TOPCLIENTESCOMPRAS = 3;
+    public static final int OP_TOPCLIENTESMONETIZA = 4;
     public static final int OP_SAIR = 0;
 
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
-                + "1- Cadastrar Produtos\n"
-                + "2- Deletar Produto\n"
-                + "3- Atualizar dados do Produto\n"
-                + "4- Listar Produtos\n"
-                + "5- Consultar Produtos por Nome\n"
+                + "1- Produtos vendidos\n"
+                + "2- Compras feitas pelo cliente\n"
+                + "3- Clientes que mais compram\n"
+                + "4- Clientes que mais realizam operacoes de monetizacao\n"
                 + "0- Sair"
                 + "\n--------------------------------------");
     }    

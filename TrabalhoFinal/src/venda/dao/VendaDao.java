@@ -6,13 +6,13 @@
 package venda.dao;
 
 import java.util.List;
-import venda.dominio.Produto;
+import venda.dominio.Venda;
 
 /**
  *
  * @author 691001155
  */
-public interface VendaDao extends Dao<Produto>{
-    public Produto procurarPorCodigo(int codigo);
-    public List<Produto> procurarPorNome(String nome);
+public interface VendaDao extends Dao<Venda>{
+    public Venda procurarPorCodigo(int codigo);
+    public List<Venda> procurarPorNumContaCliente(int codigo);
 }

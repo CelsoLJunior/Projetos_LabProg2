@@ -49,7 +49,7 @@ public class ProdutoUI {
                         consultarProdutosPorNome();
                         break;
                     case ProdutoMenu.OP_SAIR:
-                        System.out.println("Finalizando a aplicacao..");
+                        System.out.println("Retornando a aplicacao..");
                         break;
                     default:
                         System.out.println("Opção inválida..");

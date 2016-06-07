@@ -5,11 +5,11 @@
  */
 package venda.view;
 
-import venda.dominio.Produto;
+import venda.dominio.Cliente;
 import venda.negocio.NegocioException;
-import venda.negocio.ProdutoNegocio;
+import venda.negocio.ClienteNegocio;
 import venda.util.Console;
-import venda.view.menu.ProdutoMenu;
+import venda.view.menu.ClienteMenu;
 import java.util.InputMismatchException;
 import java.util.List;
 
@@ -20,36 +20,36 @@ import java.util.List;
  */
 public class ClienteUI {
 
-    private ProdutoNegocio produtoNegocio;
+    private ClienteNegocio clienteNegocio;
 
     public ClienteUI() {
-        produtoNegocio = new ProdutoNegocio();
+        clienteNegocio = new ClienteNegocio();
     }
 
     public void menu() {
         int opcao = -1;
         do {
             try {
-                System.out.println(ProdutoMenu.getOpcoes());
+                System.out.println(ClienteMenu.getOpcoes());
                 opcao = Console.scanInt("Digite sua opção:");
                 switch (opcao) {
-                    case ProdutoMenu.OP_CADASTRAR:
-                        cadastrarProduto();
+                    case ClienteMenu.OP_CADASTRAR:
+                        cadastrarCliente();
                         break;
-                    case ProdutoMenu.OP_DELETAR:
-                        deletarProduto();
+                    case ClienteMenu.OP_DELETAR:
+                        deletarCliente();
                         break;
-                    case ProdutoMenu.OP_ATUALIZAR:
-                        atualizarProduto();
+                    case ClienteMenu.OP_ATUALIZAR:
+                        atualizarCliente();
                         break;
-                    case ProdutoMenu.OP_LISTAR:
-                        mostrarProdutos();
+                    case ClienteMenu.OP_LISTAR:
+                        mostrarClientes();
                         break;
-                    case ProdutoMenu.OP_CONSULTAR:
-                        consultarProdutosPorNome();
+                    case ClienteMenu.OP_CONSULTAR:
+                        consultarClientesPorNome();
                         break;
-                    case ProdutoMenu.OP_SAIR:
-                        System.out.println("Finalizando a aplicacao..");
+                    case ClienteMenu.OP_SAIR:
+                        System.out.println("Retornando a aplicacao..");
                         break;
                     default:
                         System.out.println("Opção inválida..");
@@ -58,34 +58,36 @@ public class ClienteUI {
                 UIUtil.mostrarErro("Somente numeros sao permitidos!");
             }
 
-        } while (opcao != ProdutoMenu.OP_SAIR);
+        } while (opcao != ClienteMenu.OP_SAIR);
     }
 
-    private void cadastrarProduto() {
-        int codigo = Console.scanInt("Código: ");
+    private void cadastrarCliente() {
+        String cpf = Console.scanString("CPF: ");
         String nome = Console.scanString("Nome: ");
-        Double preco = Console.scanDouble("Preco do produto: ");
+        String email = Console.scanString("Email: ");
+        int num_conta = Console.scanInt("Numero da conta: ");
+        Double saldo = Console.scanDouble("Saldo do cliente: ");
         try {
-            produtoNegocio.salvar(new Produto(codigo, nome, preco));
-            System.out.println("Produto " + nome + " cadastrado com sucesso!");
+            clienteNegocio.salvar(new Cliente(cpf, nome, email, num_conta, saldo));
+            System.out.println("Cliente " + nome + " cadastrado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
     }
 
-    public void mostrarProdutos() {
-        List<Produto> listaProdutos = produtoNegocio.listar();
-        this.mostrarProdutos(listaProdutos);
+    public void mostrarClientes() {
+        List<Cliente> listaClientes = clienteNegocio.listar();
+        this.mostrarClientes(listaClientes);
     }
 
-    private void deletarProduto() {
-        int codigo = Console.scanInt("Codigo do produto a ser deletado: ");
+    private void deletarCliente() {
+        int codigo = Console.scanInt("Numero de conta do cliente a ser deletado: ");
         try {
-            Produto pac = produtoNegocio.procurarPorCodigo(codigo);
-            this.mostrarProduto(pac);
-            if (UIUtil.getConfirmacao("Realmente deseja excluir esse produto?")) {
-                produtoNegocio.deletar(pac);
-                System.out.println("Produto deletado com sucesso!");
+            Cliente pac = clienteNegocio.procurarPorCodigo(codigo);
+            this.mostrarCliente(pac);
+            if (UIUtil.getConfirmacao("Realmente deseja excluir esse cliente?")) {
+                clienteNegocio.deletar(pac);
+                System.out.println("Cliente deletado com sucesso!");
             } else {
                 System.out.println("Operacao cancelada!");
             }
@@ -94,61 +96,72 @@ public class ClienteUI {
         }
     }
 
-    private void atualizarProduto() {
-    	int codigo = Console.scanInt("Codigo do produto a ser alterado: ");
+    private void atualizarCliente() {
+    	int codigo = Console.scanInt("Numero de conta do cliente a ser alterado: ");
         try {
-            Produto pac = produtoNegocio.procurarPorCodigo(codigo);
-            this.mostrarProduto(pac);
+            Cliente pac = clienteNegocio.procurarPorCodigo(codigo);
+            this.mostrarCliente(pac);
 
-            System.out.println("Digite os dados do produto que quer alterar [Vazio caso nao queira]");
+            System.out.println("Digite os dados do cliente que quer alterar [Vazio caso nao queira]");
+            String cpf = Console.scanString("CPF: ");
             String nome = Console.scanString("Nome: ");
-            Double preco = Console.scanDouble("Preco do produto: ");
-            if (!nome.isEmpty()) {
-                pac.setNomeProd(nome);
+            String email = Console.scanString("Email: ");
+            
+            if (!cpf.isEmpty()) {
+                pac.setCpf(cpf);
             }
-            if (!preco.isNaN() || preco > 0) {
-                pac.setPreco(preco);
+            if (!nome.isEmpty()) {
+                pac.setNome(nome);
+            }
+            if (!email.isEmpty()) {
+                pac.setEmail(email);
             }
 
-            produtoNegocio.atualizar(pac);
-            System.out.println("Produto " + nome + " atualizado com sucesso!");
+            clienteNegocio.atualizar(pac);
+            System.out.println("Cliente " + nome + " atualizado com sucesso!");
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
     }
 
-    private void consultarProdutosPorNome() {
+    private void consultarClientesPorNome() {
         String nome = Console.scanString("Nome: ");
         try {
-            List<Produto> listaPac = produtoNegocio.procurarPorNome(nome);
-            this.mostrarProdutos(listaPac);
+            List<Cliente> listaPac = clienteNegocio.procurarPorNome(nome);
+            this.mostrarClientes(listaPac);
         } catch (NegocioException ex) {
             UIUtil.mostrarErro(ex.getMessage());
         }
 
     }
 
-    private void mostrarProduto(Produto p) {
+    private void mostrarCliente(Cliente p) {
         System.out.println("-----------------------------");
-        System.out.println("Produto");
-        System.out.println("Codigo: " + p.getCodigo());
-        System.out.println("Nome: "   + p.getNomeProd());
-        System.out.println("Preco: "  + p.getPreco());
+        System.out.println("Cliente");
+        System.out.println("CPF: "   + p.getCpf());
+        System.out.println("Nome: "   + p.getNome());
+        System.out.println("Email: "   + p.getEmail());
+        System.out.println("Numero da conta: "   + p.getNumconta());
+        System.out.println("Saldo: "   + p.getSaldo());
         System.out.println("-----------------------------");
     }
 
-    private void mostrarProdutos(List<Produto> listaProdutos) {
-        if (listaProdutos.isEmpty()) {
-            System.out.println("Produtos nao encontrados!");
+    private void mostrarClientes(List<Cliente> listaClientes) {
+        if (listaClientes.isEmpty()) {
+            System.out.println("Clientes nao encontrados!");
         } else {
             System.out.println("-----------------------------\n");
-            System.out.println(String.format("%-10s", "Codigo") + "\t"
+            System.out.println(String.format("%-20s", "CPF") + "\t"
                     + String.format("%-20s", "|NOME") + "\t"
-                    + String.format("%-20s", "|PRECO"));
-            for (Produto produto : listaProdutos) {
-                System.out.println(String.format("%-10s", produto.getCodigo()) + "\t"
-                        + String.format("%-20s", "|" + produto.getNomeProd()) + "\t"
-                        + String.format("%-20s", "|R$ " + produto.getPreco()));
+                    + String.format("%-20s", "|EMAIL") + "\t"
+                    + String.format("%-20s", "|NUMERO DA CONTA") + "\t"
+                    + String.format("%-20s", "|SALDO"));
+            for (Cliente cliente : listaClientes) {
+                System.out.println(String.format("%-20s", cliente.getCpf()) + "\t"
+                        + String.format("%-20s", "|" + cliente.getNome()) + "\t"
+                        + String.format("%-20s", "|" + cliente.getEmail()) + "\t"
+                        + String.format("%-20s", "|" + cliente.getNumconta()) + "\t"
+                        + String.format("%-20s", "|R$ " + cliente.getSaldo()));
             }
         }
     }

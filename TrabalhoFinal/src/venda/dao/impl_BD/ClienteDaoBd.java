@@ -4,34 +4,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import venda.dominio.Produto;
-import venda.dao.ProdutoDao;
+import venda.dominio.Cliente;
+import venda.dao.ClienteDao;
 
-public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
+public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
   
 
     //Metodo salvar: trabalhar com data e recebe o id auto-increment 
-    //e já relaciona no objeto produto (recebido por parâmetro)
+    //e já relaciona no objeto cliente (recebido por parâmetro)
     //Caso queira retornar, só retornar id.
     @Override
-    public void salvar(Produto produto) {
+    public void salvar(Cliente cliente) {
         int id = 0;
         try {
-            String sql = "INSERT INTO produtos (codigo, nome, preco) "
-                    + "VALUES (?,?,?)";
+            String sql = "INSERT INTO clientes (cpf, nome, email, numero_conta, saldo) "
+                    + "VALUES (?,?,?,?,?)";
 
             //Foi criado um novo método conectar para obter o id
             conectarObtendoId(sql);
-            comando.setInt(1, produto.getCodigo());
-            comando.setString(2, produto.getNomeProd());
-            comando.setDouble(3, produto.getPreco());
+            comando.setString(1, cliente.getCpf());
+            comando.setString(2, cliente.getNome());
+            comando.setString(3, cliente.getEmail());
+            comando.setInt(4, cliente.getNumconta());
+            comando.setDouble(5, cliente.getSaldo());
             comando.executeUpdate();
             //Obtém o resultSet para pegar o id
             ResultSet resultado = comando.getGeneratedKeys();
             if (resultado.next()) {
                 //seta o id para o objeto
                 id = resultado.getInt(1);
-                produto.setId(id);
+                cliente.setId(id);
             }
             else{
                 System.err.println("Erro de Sistema - Nao gerou o id conforme esperado!");
@@ -39,7 +41,7 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao salvar produto no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao salvar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -47,16 +49,16 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
     }
 
     @Override
-    public void deletar(Produto produto) {
+    public void deletar(Cliente cliente) {
         try {
-            String sql = "DELETE FROM produtos WHERE id = ?";
+            String sql = "DELETE FROM clientes WHERE id = ?";
 
             conectar(sql);
-            comando.setInt(1, produto.getId());
+            comando.setInt(1, cliente.getId());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao deletar produto no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao deletar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -65,20 +67,22 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
     }
 
     @Override
-    public void atualizar(Produto produto) {
+    public void atualizar(Cliente cliente) {
         try {
-            String sql = "UPDATE produtos SET codigo=?, nome=?, preco=? "
+            String sql = "UPDATE clientes SET cpf=?, nome=?, email=?, numero_conta=?, saldo=? "
                     + "WHERE id=?";
 
             conectar(sql);
-            comando.setInt(1, produto.getCodigo());
-            comando.setString(2, produto.getNomeProd());
-            comando.setDouble(3, produto.getPreco());
-            comando.setInt(4, produto.getId());
+            comando.setString(1, cliente.getCpf());
+            comando.setString(2, cliente.getNome());
+            comando.setString(3, cliente.getEmail());
+            comando.setInt(4, cliente.getNumconta());
+            comando.setDouble(5, cliente.getSaldo());
+            comando.setInt(6, cliente.getId());
             comando.executeUpdate();
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao atualizar produto no Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao atualizar cliente no Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -87,10 +91,10 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
     }
 
     @Override
-    public List<Produto> listar() {
-        List<Produto> listaProdutos = new ArrayList<>();
+    public List<Cliente> listar() {
+        List<Cliente> listaClientes = new ArrayList<>();
 
-        String sql = "SELECT * FROM produtos";
+        String sql = "SELECT * FROM clientes";
 
         try {
             conectar(sql);
@@ -99,29 +103,31 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
 
             while (resultado.next()) {
                 int id = resultado.getInt("id");
-                int codigo = resultado.getInt("codigo");
+                String cpf = resultado.getString("cpf");
                 String nome = resultado.getString("nome");
-                Double preco = resultado.getDouble("preco");
-               
-                Produto pac = new Produto(id, codigo, nome, preco);
+                String email = resultado.getString("email");
+                int num_conta = resultado.getInt("numero_conta");
+                Double saldo = resultado.getDouble("saldo");
+                               
+                Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
-                listaProdutos.add(pac);
+                listaClientes.add(pac);
 
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar os Produtos do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar os Clientes do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
         }
 
-        return (listaProdutos);
+        return (listaClientes);
     }
 
     @Override
-    public Produto procurarPorId(int id) {
-        String sql = "SELECT * FROM produtos WHERE id = ?";
+    public Cliente procurarPorId(int id) {
+        String sql = "SELECT * FROM clientes WHERE id = ?";
 
         try {
             conectar(sql);
@@ -130,18 +136,20 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
             ResultSet resultado = comando.executeQuery();
 
             if (resultado.next()) {
-            	int codigo = resultado.getInt("codigo");
+            	String cpf = resultado.getString("cpf");
                 String nome = resultado.getString("nome");
-                Double preco = resultado.getDouble("preco");
-
-                Produto pac = new Produto(id, codigo, nome, preco);
+                String email = resultado.getString("email");
+                int num_conta = resultado.getInt("numero_conta");
+                Double saldo = resultado.getDouble("saldo");
+                               
+                Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
                 return pac;
 
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar o produto pelo id do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar o cliente pelo id do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -151,8 +159,8 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
     }
 
     @Override
-    public Produto procurarPorCodigo(int codigo) {
-        String sql = "SELECT * FROM produtos WHERE codigo = ?";
+    public Cliente procurarPorNumConta(int codigo) {
+        String sql = "SELECT * FROM clientes WHERE numero_conta = ?";
 
         try {
             conectar(sql);
@@ -162,18 +170,20 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
 
             if (resultado.next()) {
                 int id = resultado.getInt("id");
-            	int codigoProd = resultado.getInt("codigo");
+                String cpf = resultado.getString("cpf");
                 String nome = resultado.getString("nome");
-                Double preco = resultado.getDouble("preco");
-
-                Produto pac = new Produto(id, codigoProd, nome, preco);
+                String email = resultado.getString("email");
+                int num_conta = resultado.getInt("numero_conta");
+                Double saldo = resultado.getDouble("saldo");
+                               
+                Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
                 return pac;
 
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar o produto pelo rg do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar o cliente pelo rg do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
@@ -183,9 +193,9 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
     }
 
     @Override
-    public List<Produto> procurarPorNome(String nome) {
-        List<Produto> listaProdutos = new ArrayList<>();
-        String sql = "SELECT * FROM produtos WHERE nome LIKE ?";
+    public List<Cliente> procurarPorNome(String nome) {
+        List<Cliente> listaClientes = new ArrayList<>();
+        String sql = "SELECT * FROM clientes WHERE nome LIKE ?";
 
         try {
             conectar(sql);
@@ -194,22 +204,24 @@ public class ClienteDaoBd extends DaoBd<Produto> implements ProdutoDao {
 
             while (resultado.next()) {
                 int id = resultado.getInt("id");
-            	int codigo = resultado.getInt("codigo");
-                String nomeProd = resultado.getString("nome");
-                Double preco = resultado.getDouble("preco");
+                String cpf = resultado.getString("cpf");
+                String nomec = resultado.getString("nome");
+                String email = resultado.getString("email");
+                int num_conta = resultado.getInt("numero_conta");
+                Double saldo = resultado.getDouble("saldo");
+                               
+                Cliente pac = new Cliente(id, cpf, nomec, email, num_conta, saldo);
 
-                Produto pac = new Produto(id, codigo, nomeProd, preco);
-
-                listaProdutos.add(pac);
+                listaClientes.add(pac);
 
             }
 
         } catch (SQLException ex) {
-            System.err.println("Erro de Sistema - Problema ao buscar os Produtos pelo nome do Banco de Dados!");
+            System.err.println("Erro de Sistema - Problema ao buscar os Clientes pelo nome do Banco de Dados!");
             throw new RuntimeException(ex);
         } finally {
             fecharConexao();
         }
-        return (listaProdutos);
+        return (listaClientes);
     }
 }

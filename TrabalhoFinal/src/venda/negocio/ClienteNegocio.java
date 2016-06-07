@@ -5,9 +5,9 @@
  */
 package venda.negocio;
 
-import venda.dominio.Produto;
-import venda.dao.ProdutoDao;
-import venda.dao.impl_BD.ProdutoDaoBd;
+import venda.dominio.Cliente;
+import venda.dao.ClienteDao;
+import venda.dao.impl_BD.ClienteDaoBd;
 import java.util.List;
 
 /**
@@ -16,77 +16,85 @@ import java.util.List;
  */
 public class ClienteNegocio {
 
-    private ProdutoDao produtoDao;
+    private ClienteDao clienteDao;
 
     public ClienteNegocio() {
-        produtoDao = new ProdutoDaoBd();
+        clienteDao = new ClienteDaoBd();
     }
 
-    public void salvar(Produto p) throws NegocioException {
+    public void salvar(Cliente p) throws NegocioException {
         this.validarCamposObrigatorios(p);
         this.validarCodigoExistente(p);
-        produtoDao.salvar(p);
+        clienteDao.salvar(p);
     }
 
-    public List<Produto> listar() {
-        return (produtoDao.listar());
+    public List<Cliente> listar() {
+        return (clienteDao.listar());
     }
 
-    public void deletar(Produto produto) throws NegocioException {
-        if (produto == null || produto.getNomeProd() == null) {
-            throw new NegocioException("Produto nao existe!");
+    public void deletar(Cliente cliente) throws NegocioException {
+        if (cliente == null || cliente.getNome() == null) {
+            throw new NegocioException("Cliente nao existe!");
         }
-        produtoDao.deletar(produto);
+        clienteDao.deletar(cliente);
     }
 
-    public void atualizar(Produto produto) throws NegocioException {
-        if (produto == null || produto.getNomeProd() == null) {
-            throw new NegocioException("Produto nao existe!");
+    public void atualizar(Cliente cliente) throws NegocioException {
+        if (cliente == null || cliente.getNome() == null) {
+            throw new NegocioException("Cliente nao existe!");
         }
-        this.validarCamposObrigatorios(produto);
-        produtoDao.atualizar(produto);
+        this.validarCamposObrigatorios(cliente);
+        clienteDao.atualizar(cliente);
     }
 
-    public Produto procurarPorCodigo(int codigo) throws NegocioException {
+    public Cliente procurarPorCodigo(int codigo) throws NegocioException {
         if (codigo < 0) {
-            throw new NegocioException("Campo codigo nao informado ou zerado");
+            throw new NegocioException("Campo numero de conta nao informado ou zerado");
         }
-        Produto produto = produtoDao.procurarPorCodigo(codigo);
-        if (produto == null) {
-            throw new NegocioException("Produto nao encontrado");
+        Cliente cliente = clienteDao.procurarPorNumConta(codigo);
+        if (cliente == null) {
+            throw new NegocioException("Cliente nao encontrado");
         }
-        return (produto);
+        return (cliente);
     }
 
-    public List<Produto> procurarPorNome(String nome) throws NegocioException {
+    public List<Cliente> procurarPorNome(String nome) throws NegocioException {
         if (nome == null || nome.isEmpty()) {
             throw new NegocioException("Campo nome nao informado");
         }
-        return(produtoDao.procurarPorNome(nome));
+        return(clienteDao.procurarPorNome(nome));
     }
 
-    public boolean produtoExiste(int codigo) {
-        Produto produto = produtoDao.procurarPorCodigo(codigo);
-        return (produto != null);
+    public boolean clienteExiste(int codigo) {
+        Cliente cliente = clienteDao.procurarPorNumConta(codigo);
+        return (cliente != null);
     }
 
-    private void validarCamposObrigatorios(Produto p) throws NegocioException {
-        if (p.getCodigo() < 1) {
-            throw new NegocioException("Campo codigo negativo ou zero!");
+    private void validarCamposObrigatorios(Cliente p) throws NegocioException {
+        if (p.getNumconta() < 1) {
+            throw new NegocioException("Campo numero de conta negativo ou zero!");
         }
 
-        if (p.getNomeProd() == null || p.getNomeProd().isEmpty()) {
+        if (p.getCpf()== null || p.getCpf().isEmpty()) {
+            throw new NegocioException("Campo cpf nao informado");
+        }
+        
+        if (p.getNome() == null || p.getNome().isEmpty()) {
             throw new NegocioException("Campo nome nao informado");
         }
         
-        if (p.getPreco() == null || p.getPreco() < 0) {
+        if (p.getEmail()== null || p.getEmail().isEmpty()) {
+            throw new NegocioException("Campo email nao informado");
+        }
+        
+        if (p.getSaldo()== null || p.getSaldo() < 0) {
             throw new NegocioException("Campo preco nao informado ou zero");
         }
     }
 
-    private void validarCodigoExistente(Produto p) throws NegocioException {
-        if (produtoExiste(p.getCodigo())) {
-            throw new NegocioException("Codigo ja existente");
+    private void validarCodigoExistente(Cliente p) throws NegocioException {
+        if (clienteExiste(p.getNumconta())) {
+            throw new NegocioException("Numero de conta ja existente");
         }
     }
 

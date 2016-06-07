@@ -19,11 +19,11 @@ public class ClienteMenu {
 
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
-                + "1- Cadastrar Produtos\n"
-                + "2- Deletar Produto\n"
-                + "3- Atualizar dados do Produto\n"
-                + "4- Listar Produtos\n"
-                + "5- Consultar Produtos por Nome\n"
+                + "1- Cadastrar Clientes\n"
+                + "2- Deletar Cliente\n"
+                + "3- Atualizar dados do Cliente\n"
+                + "4- Listar Clientes\n"
+                + "5- Consultar Clientes por Nome\n"
                 + "0- Sair"
                 + "\n--------------------------------------");
     }    

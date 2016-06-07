@@ -5,7 +5,7 @@
  */
 package venda;
 
-import venda.view.ProdutoUI;
+import venda.view.PrincipalUI;
 
 /**
  *
@@ -13,6 +13,6 @@ import venda.view.ProdutoUI;
  */
 public class Venda {
     public static void main(String[] args) {
-        new ProdutoUI().menu();
+        new PrincipalUI().menu();
     }
 }

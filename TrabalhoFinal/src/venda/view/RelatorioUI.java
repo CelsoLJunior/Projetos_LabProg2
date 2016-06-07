@@ -18,11 +18,11 @@ import java.util.List;
  *
  * @author 691001155
  */
-public class VendaUI {
+public class RelatorioUI {
 
     private ProdutoNegocio produtoNegocio;
 
-    public VendaUI() {
+    public RelatorioUI() {
         produtoNegocio = new ProdutoNegocio();
     }
 
