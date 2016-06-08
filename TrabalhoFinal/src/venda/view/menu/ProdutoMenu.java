@@ -24,7 +24,7 @@ public class ProdutoMenu {
                 + "3- Atualizar dados do Produto\n"
                 + "4- Listar Produtos\n"
                 + "5- Consultar Produtos por Nome\n"
-                + "0- Sair"
+                + "0- Voltar"
                 + "\n--------------------------------------");
     }    
 }

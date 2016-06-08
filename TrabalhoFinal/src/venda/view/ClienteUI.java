@@ -31,7 +31,7 @@ public class ClienteUI {
         do {
             try {
                 System.out.println(ClienteMenu.getOpcoes());
-                opcao = Console.scanInt("Digite sua opção:");
+                opcao = Console.scanInt("Digite sua opcao:");
                 switch (opcao) {
                     case ClienteMenu.OP_CADASTRAR:
                         cadastrarCliente();
@@ -52,7 +52,7 @@ public class ClienteUI {
                         System.out.println("Retornando a aplicacao..");
                         break;
                     default:
-                        System.out.println("Opção inválida..");
+                        System.out.println("Opcao invalida..");
                 }
             } catch (InputMismatchException ex) {
                 UIUtil.mostrarErro("Somente numeros sao permitidos!");

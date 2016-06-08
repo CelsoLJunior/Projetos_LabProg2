@@ -24,7 +24,7 @@ public class ClienteMenu {
                 + "3- Atualizar dados do Cliente\n"
                 + "4- Listar Clientes\n"
                 + "5- Consultar Clientes por Nome\n"
-                + "0- Sair"
+                + "0- Voltar"
                 + "\n--------------------------------------");
     }    
 }

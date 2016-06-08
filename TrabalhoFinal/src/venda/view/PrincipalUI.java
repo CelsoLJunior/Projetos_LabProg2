@@ -5,14 +5,9 @@
  */
 package venda.view;
 
-import venda.dominio.Produto;
-import venda.negocio.NegocioException;
-import venda.negocio.ProdutoNegocio;
 import venda.util.Console;
-import venda.view.menu.ProdutoMenu;
+import venda.view.menu.PrincipalMenu;
 import java.util.InputMismatchException;
-import java.util.List;
-
 
 /**
  *
@@ -20,136 +15,115 @@ import java.util.List;
  */
 public class PrincipalUI {
 
-    private ProdutoNegocio produtoNegocio;
-
-    public PrincipalUI() {
-        produtoNegocio = new ProdutoNegocio();
-    }
-
     public void menu() {
         int opcao = -1;
         do {
             try {
-                System.out.println(ProdutoMenu.getOpcoes());
-                opcao = Console.scanInt("Digite sua opção:");
+                System.out.println(PrincipalMenu.getOpcoes());
+                opcao = Console.scanInt("Digite sua opcao:");
                 switch (opcao) {
-                    case ProdutoMenu.OP_CADASTRAR:
-                        cadastrarProduto();
+                    case PrincipalMenu.OP_CADASTRARCLIENTE:
+                        cadastrarCliente();
                         break;
-                    case ProdutoMenu.OP_DELETAR:
-                        deletarProduto();
+                    case PrincipalMenu.OP_CADASTRARPROD:
+                    	cadastrarProduto();
                         break;
-                    case ProdutoMenu.OP_ATUALIZAR:
-                        atualizarProduto();
+                    case PrincipalMenu.OP_MONETIZA:
+                        motenizacao();
                         break;
-                    case ProdutoMenu.OP_LISTAR:
-                        mostrarProdutos();
+                    case PrincipalMenu.OP_VENDA:
+                        venda();
                         break;
-                    case ProdutoMenu.OP_CONSULTAR:
-                        consultarProdutosPorNome();
+                    case PrincipalMenu.OP_RELATORIO:
+                        relatorio();
                         break;
-                    case ProdutoMenu.OP_SAIR:
+                    case PrincipalMenu.OP_SAIR:
                         System.out.println("Finalizando a aplicacao..");
                         break;
                     default:
-                        System.out.println("Opção inválida..");
+                        System.out.println("Opcao invalida...");
                 }
             } catch (InputMismatchException ex) {
                 UIUtil.mostrarErro("Somente numeros sao permitidos!");
             }
 
-        } while (opcao != ProdutoMenu.OP_SAIR);
+        } while (opcao != PrincipalMenu.OP_SAIR);
     }
 
+    private void cadastrarCliente() {
+    	new ClienteUI().menu();
+    }
+ 
     private void cadastrarProduto() {
-        int codigo = Console.scanInt("Código: ");
-        String nome = Console.scanString("Nome: ");
-        Double preco = Console.scanDouble("Preco do produto: ");
-        try {
-            produtoNegocio.salvar(new Produto(codigo, nome, preco));
-            System.out.println("Produto " + nome + " cadastrado com sucesso!");
-        } catch (NegocioException ex) {
-            UIUtil.mostrarErro(ex.getMessage());
-        }
+        new ProdutoUI().menu();
     }
 
-    public void mostrarProdutos() {
-        List<Produto> listaProdutos = produtoNegocio.listar();
-        this.mostrarProdutos(listaProdutos);
+    public void motenizacao() {
+    	new MonetizacaoUI().menu();
     }
 
-    private void deletarProduto() {
-        int codigo = Console.scanInt("Codigo do produto a ser deletado: ");
-        try {
-            Produto pac = produtoNegocio.procurarPorCodigo(codigo);
-            this.mostrarProduto(pac);
-            if (UIUtil.getConfirmacao("Realmente deseja excluir esse produto?")) {
-                produtoNegocio.deletar(pac);
-                System.out.println("Produto deletado com sucesso!");
-            } else {
-                System.out.println("Operacao cancelada!");
-            }
-        } catch (NegocioException ex) {
-            UIUtil.mostrarErro(ex.getMessage());
-        }
+    private void venda() {
+    	/*
+    	if(clientes.isEmpty() || produtos.isEmpty()){
+			System.out.println("Sistema nao possui clientes ou produtos!");
+		}
+		else{
+			System.out.println("Venda de produtos com monetizacao:");
+			
+			while (true) {
+				int teste=0;
+				System.out.println("Numero da conta do cliente: ");
+				vendaNumContaCliente = e.nextInt();
+				
+				for (Cliente cliente : clientes) {
+					if (cliente.getNumero_conta() == vendaNumContaCliente) {
+						teste = 1;
+					}
+				}
+				if (teste != 0) {
+					break;
+				}
+				else{
+					System.out.println("Conta nao cadastrada!");
+				}
+			}
+			
+			LocalDate dataHoraAtual = LocalDate.now();
+			
+			do {
+				while (true) {
+					int teste=0;
+					System.out.println("Produto: ");
+					vendaCodProd = e.nextInt();
+					
+					for (Produto produto : produtos) {
+						if (produto.getCodigo() == vendaCodProd) {
+							produtoVendido = produto;
+							teste = 1;
+						}
+					}
+					if (teste != 0) {
+						break;
+					}
+					else {
+						System.out.println("Produto nao encontrado!");
+					}
+				}
+				System.out.println("Quantidade do produto: ");
+				vendaQuantProd = e.nextInt();
+				
+				System.out.println("Deseja adicionar novo produto? \n0 = Nao\n1 = Sim");
+				resposta = e.nextInt();
+				
+			} while (resposta != 0);
+			
+			Venda venda = new Venda(vendaNumContaCliente, dataHoraAtual, produtoVendido, vendaQuantProd);
+			vendas.add(venda);
+		}
+    	*/
     }
 
-    private void atualizarProduto() {
-    	int codigo = Console.scanInt("Codigo do produto a ser alterado: ");
-        try {
-            Produto pac = produtoNegocio.procurarPorCodigo(codigo);
-            this.mostrarProduto(pac);
-
-            System.out.println("Digite os dados do produto que quer alterar [Vazio caso nao queira]");
-            String nome = Console.scanString("Nome: ");
-            Double preco = Console.scanDouble("Preco do produto: ");
-            if (!nome.isEmpty()) {
-                pac.setNomeProd(nome);
-            }
-            if (!preco.isNaN() || preco > 0) {
-                pac.setPreco(preco);
-            }
-
-            produtoNegocio.atualizar(pac);
-            System.out.println("Produto " + nome + " atualizado com sucesso!");
-        } catch (NegocioException ex) {
-            UIUtil.mostrarErro(ex.getMessage());
-        }
-    }
-
-    private void consultarProdutosPorNome() {
-        String nome = Console.scanString("Nome: ");
-        try {
-            List<Produto> listaPac = produtoNegocio.procurarPorNome(nome);
-            this.mostrarProdutos(listaPac);
-        } catch (NegocioException ex) {
-            UIUtil.mostrarErro(ex.getMessage());
-        }
-
-    }
-
-    private void mostrarProduto(Produto p) {
-        System.out.println("-----------------------------");
-        System.out.println("Produto");
-        System.out.println("Codigo: " + p.getCodigo());
-        System.out.println("Nome: "   + p.getNomeProd());
-        System.out.println("Preco: "  + p.getPreco());
-        System.out.println("-----------------------------");
-    }
-
-    private void mostrarProdutos(List<Produto> listaProdutos) {
-        if (listaProdutos.isEmpty()) {
-            System.out.println("Produtos nao encontrados!");
-        } else {
-            System.out.println("-----------------------------\n");
-            System.out.println(String.format("%-10s", "Codigo") + "\t"
-                    + String.format("%-20s", "|NOME") + "\t"
-                    + String.format("%-20s", "|PRECO"));
-            for (Produto produto : listaProdutos) {
-                System.out.println(String.format("%-10s", produto.getCodigo()) + "\t"
-                        + String.format("%-20s", "|" + produto.getNomeProd()) + "\t"
-                        + String.format("%-20s", "|R$ " + produto.getPreco()));
-            }
-        }
+    private void relatorio() {
+    	new RelatorioUI().menu();
     }
 }

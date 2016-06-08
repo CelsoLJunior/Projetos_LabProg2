@@ -31,7 +31,7 @@ public class ProdutoUI {
         do {
             try {
                 System.out.println(ProdutoMenu.getOpcoes());
-                opcao = Console.scanInt("Digite sua opção:");
+                opcao = Console.scanInt("Digite sua opcao:");
                 switch (opcao) {
                     case ProdutoMenu.OP_CADASTRAR:
                         cadastrarProduto();
@@ -52,7 +52,7 @@ public class ProdutoUI {
                         System.out.println("Retornando a aplicacao..");
                         break;
                     default:
-                        System.out.println("Opção inválida..");
+                        System.out.println("Opcao invalida..");
                 }
             } catch (InputMismatchException ex) {
                 UIUtil.mostrarErro("Somente numeros sao permitidos!");
@@ -62,7 +62,7 @@ public class ProdutoUI {
     }
 
     private void cadastrarProduto() {
-        int codigo = Console.scanInt("Código: ");
+        int codigo = Console.scanInt("Codigo: ");
         String nome = Console.scanString("Nome: ");
         Double preco = Console.scanDouble("Preco do produto: ");
         try {

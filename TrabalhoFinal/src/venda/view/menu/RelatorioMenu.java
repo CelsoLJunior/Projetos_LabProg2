@@ -14,7 +14,7 @@ public class RelatorioMenu {
     public static final int OP_COMPRASCLIENTE = 2;
     public static final int OP_TOPCLIENTESCOMPRAS = 3;
     public static final int OP_TOPCLIENTESMONETIZA = 4;
-    public static final int OP_SAIR = 0;
+    public static final int OP_VOLTAR = 0;
 
     public static String getOpcoes() {
         return ("\n--------------------------------------\n"
@@ -22,7 +22,7 @@ public class RelatorioMenu {
                 + "2- Compras feitas pelo cliente\n"
                 + "3- Clientes que mais compram\n"
                 + "4- Clientes que mais realizam operacoes de monetizacao\n"
-                + "0- Sair"
+                + "0- Voltar"
                 + "\n--------------------------------------");
     }    
 }
