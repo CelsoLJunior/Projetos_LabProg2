@@ -142,7 +142,7 @@ public class ClienteUI {
         System.out.println("Nome: "   + p.getNome());
         System.out.println("Email: "   + p.getEmail());
         System.out.println("Numero da conta: "   + p.getNumconta());
-        System.out.println("Saldo: "   + p.getSaldo());
+        System.out.println("Saldo: R$ "   + p.getSaldo());
         System.out.println("-----------------------------");
     }
 

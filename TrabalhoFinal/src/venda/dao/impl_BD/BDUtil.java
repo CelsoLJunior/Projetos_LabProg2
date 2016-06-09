@@ -16,7 +16,7 @@ public class BDUtil {
     private final static String BD = "venda_de_produtos";
     private final static String URL = "jdbc:postgresql://"+HOST+":"+PORT+"/"+BD;
     private final static String USUARIO = "postgres";
-    private final static String SENHA = "teste";
+    private final static String SENHA = "123456";
     
     public static Connection getConnection(){
         Connection conexao = null;

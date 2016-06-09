@@ -88,7 +88,7 @@ public class ClienteNegocio {
         }
         
         if (p.getSaldo()== null || p.getSaldo() < 0) {
-            throw new NegocioException("Campo preco nao informado ou zero");
+            throw new NegocioException("Campo saldo nao informado ou zero");
         }
     }
 
