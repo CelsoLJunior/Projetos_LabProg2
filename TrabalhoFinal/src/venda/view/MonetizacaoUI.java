@@ -45,14 +45,72 @@ public class MonetizacaoUI {
     }
 
     private void deposito() {
-        
+        /*
+if(clientes.size() < 1){
+        System.out.println("Sistema nao possui clientes!");
+}
+else{
+        testeSair = 0;
+
+        while (testeSair == 0) {
+                System.out.println("Digite o numero da conta do cliente: ");
+                int teste = e.nextInt();
+
+                for (Cliente cliente : clientes) {
+                        if (cliente.getNumero_conta() == teste) {
+
+
+                        System.out.println("Valor a ser depositado");
+                        Double valor = e.nextDouble();
+
+                        if (valor < 5) {
+                                System.out.println("Valor negativo ou muito baixo!");
+                        }
+                        else{
+                                cliente.deposito(valor);
+                                System.out.println("R$ "+valor+" depositado!");
+                                break;
+                        }	
+    
+
+    
+                                                  
+*/
     }
 
     public void transferencia() {
+        /*
+        case 2: 
+            if(clientes.size() < 2){
+                    System.out.println("Sistema nao possui clientes suficientes!");
+            }
+            else{
+        System.out.println("Digite o numero da conta do cliente: ");
+        int teste1 = e.nextInt();
         
+        for (Cliente cliente1 : clientes) {
+            if (cliente1.getNumero_conta() == teste1) {
+            while(true){
+
+            System.out.println("Valor a ser transferido");
+            Double valor1 = e.nextDouble();
+
+            if (valor1 < 0) {
+                    System.out.println("Valor negativo!");
+            }
+            else{
+                    cliente.deposito(-valor1);
+                    cliente1.deposito(valor1);
+                    System.out.println("R$ "+valor1+" transferido!");
+
+                    testeSair=1;
+                    break;
+            }	
+        }
+        */
     }
 
     private void vizualizarSaldo() {
-       
+       //System.out.println("Seu saldo e de R$ "+cliente.getSaldo());
     }
 }

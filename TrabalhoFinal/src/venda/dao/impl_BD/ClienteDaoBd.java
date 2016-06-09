@@ -17,7 +17,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     public void salvar(Cliente cliente) {
         int id = 0;
         try {
-            String sql = "INSERT INTO clientes (cpf, nome, email, numero_conta, saldo) "
+            String sql = "INSERT INTO clientes (cpf, nome, email, numero_conta, saldo_conta) "
                     + "VALUES (?,?,?,?,?)";
 
             //Foi criado um novo método conectar para obter o id
@@ -69,7 +69,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
     @Override
     public void atualizar(Cliente cliente) {
         try {
-            String sql = "UPDATE clientes SET cpf=?, nome=?, email=?, numero_conta=?, saldo=? "
+            String sql = "UPDATE clientes SET cpf=?, nome=?, email=?, numero_conta=?, saldo_conta=? "
                     + "WHERE id=?";
 
             conectar(sql);
@@ -107,7 +107,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("email");
                 int num_conta = resultado.getInt("numero_conta");
-                Double saldo = resultado.getDouble("saldo");
+                Double saldo = resultado.getDouble("saldo_conta");
                                
                 Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
@@ -140,7 +140,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("email");
                 int num_conta = resultado.getInt("numero_conta");
-                Double saldo = resultado.getDouble("saldo");
+                Double saldo = resultado.getDouble("saldo_conta");
                                
                 Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
@@ -174,7 +174,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 String nome = resultado.getString("nome");
                 String email = resultado.getString("email");
                 int num_conta = resultado.getInt("numero_conta");
-                Double saldo = resultado.getDouble("saldo");
+                Double saldo = resultado.getDouble("saldo_conta");
                                
                 Cliente pac = new Cliente(id, cpf, nome, email, num_conta, saldo);
 
@@ -208,7 +208,7 @@ public class ClienteDaoBd extends DaoBd<Cliente> implements ClienteDao {
                 String nomec = resultado.getString("nome");
                 String email = resultado.getString("email");
                 int num_conta = resultado.getInt("numero_conta");
-                Double saldo = resultado.getDouble("saldo");
+                Double saldo = resultado.getDouble("saldo_conta");
                                
                 Cliente pac = new Cliente(id, cpf, nomec, email, num_conta, saldo);
 
